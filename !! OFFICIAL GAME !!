@@ -7,7 +7,7 @@ string inventory[31];
 
 //global variables
 int PlayerHealth = 200;
-int dubloons = 135;
+int dabloons = 135;
 int affinity = 0;
 int luck = 0;
 bool hasWon = false;
@@ -63,13 +63,13 @@ int main() {
 		cout << "---------------------------------------" << endl;
 		cout << "Your affinity is: " << affinity << "." << endl;
 		cout << "Your health:" << PlayerHealth << "." << endl;
-		cout << "You have " << dubloons << "." << endl;
+		cout << "You have " << dabloons << "." << endl;
 		cout << "---------------------------------------" << endl;
 
 		if (affinity >= 50) {
-			cout << "Your Wyvern coughs up 50 dubloons" << endl;
+			cout << "Your Wyvern coughs up 50 dabloons" << endl;
 			
-			dubloons += 50;
+			dabloons += 50;
 		}
 
 		cout << "-----Your Inventory-----" << endl; 
@@ -554,7 +554,7 @@ int main() {
 		case 33:
 			system("color 07");
 			Dropper();
-			dubloons += 200;
+			dabloons += 200;
 			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl; 
 			cout << "Things continue to florish as you walk deeper into the room... To go back head (e)ast.. If you wish to continue please head (s)outh" << endl;
 			cin >> input;
@@ -1489,19 +1489,19 @@ void Dropper() {
 		cout << "---------------------------------------------------------------------" << endl;
 	}
 	else if (num < 40) {
-		cout << "You rest up and feel better than normal.. thats because you find 50 dubloons in a pouch!" << endl;
-		dubloons += 50;
+		cout << "You rest up and feel better than normal.. thats because you find 50 dabloons in a pouch!" << endl;
+		dabloons += 50;
 
 		cout << "---------------------------------------------------------------------" << endl;
 	}
 	else if (num < 50) {
 		cout << "You get a bag full of dabloons" << endl;
-		dubloons += 70;
+		dabloons += 70;
 		cout << "---------------------------------------------------------------------" << endl;
 	}
 	if (num < 90) {
-		cout << "You gain a handfull of dubloons" << endl;
-		dubloons += 100;
+		cout << "You gain a handfull of dabloons" << endl;
+		dabloons += 100;
 		cout << "---------------------------------------------------------------------" << endl;
 	}
 }
@@ -1567,7 +1567,7 @@ void Shop() {
 	cout << "------------------------------SHOP--------------------------------------" << endl;
 	int input = 1;
 	while (input != 0) {
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items I have for sale are:" << endl;
 		cout << "1) Battle Axe: 150 " << endl;
 		cout << "2) Golden Armor: 360" << endl;
@@ -1577,28 +1577,28 @@ void Shop() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 150) {
+			if (dabloons >= 150) {
 				cout << "A battle axe! wonderful choice!" << endl;
 				inventory[18] = "Axe";
-				dubloons -= 150;
+				dabloons -= 150;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that item!" << endl;
+				cout << "You dont have enough dabloons to pay for that item!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 360) {
+			if (dabloons >= 360) {
 				cout << "The golden armor? I wish you luck for your final battle!" << endl;
 				inventory[19] = "GoldArmor";
-				dubloons -= 360;
+				dabloons -= 360;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 220) {
+			if (dabloons >= 220) {
 				cout << "Loki's weapon? an intresting choice for an intresting person" << endl;
 				inventory[20] = "Lævateinn";
-				dubloons -= 220;
+				dabloons -= 220;
 			}
 		}
 	}
@@ -1608,7 +1608,7 @@ void Shep() {
 	cout << "------------------------------SHOP--------------------------------------" << endl;
 	int input = 1;
 	while (input != 0) {
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items I have for sale are:" << endl;
 		cout << "1) Battle Axe: 150 " << endl;
 		cout << "2) Dragon Scale Armor: 360" << endl;
@@ -1618,28 +1618,28 @@ void Shep() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 150) {
+			if (dabloons >= 150) {
 				cout << "A battle axe! wonderful choice!" << endl;
 				inventory[18] = "Axe";
-				dubloons -= 150;
+				dabloons -= 150;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that item!" << endl;
+				cout << "You dont have enough dabloons to pay for that item!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 360) {
+			if (dabloons >= 360) {
 				cout << "The golden armor? I wish you luck for your final battle!" << endl;
 				inventory[30] = "dragonscalearmor";
-				dubloons -= 360;
+				dabloons -= 360;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 220) {
+			if (dabloons >= 220) {
 				cout << "Thor's hammer? an intresting choice" << endl;
 				inventory[29] = "hammer";
-				dubloons -= 220;
+				dabloons -= 220;
 			}
 		}
 	}
@@ -1649,7 +1649,7 @@ void eshop() {
 	cout << "------------------------------SHOP--------------------------------------" << endl;
 	int input = 1;
 	while (input != 0) {
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items I have for sale are:" << endl;
 		cout << "1) Refreshing milk: 40 " << endl;
 		cout << "2) Siziling beef: 2" << endl;
@@ -1661,48 +1661,48 @@ void eshop() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 40) {
+			if (dabloons >= 40) {
 				cout << "You buy the milk from the cow.." << endl;
 				inventory[21] = "milk";
-				dubloons -= 20;
+				dabloons -= 20;
 				PlayerHealth += 50;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that item!" << endl;
+				cout << "You dont have enough dabloons to pay for that item!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 2) {
+			if (dabloons >= 2) {
 				cout << "You buy beef from the cow with no question" << endl;
 				inventory[22] = "beef";
-				dubloons -= 2;
+				dabloons -= 2;
 				PlayerHealth += 70;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 5) {
+			if (dabloons >= 5) {
 				cout << "you buy the calf from the cow" << endl;
 				inventory[23] = "calf";
-				dubloons -= 5;
+				dabloons -= 5;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
 		}
 		if (input == 4) {
-			if (dubloons >= 2) {
+			if (dabloons >= 2) {
 				cout << "You buy the grandbaby calf from the cow" << endl;
 				inventory[24] = "babycalf";
-				dubloons -= 2;
+				dabloons -= 2;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
 		}
 		if (input == 5) {
-			if (dubloons >= 1) {
+			if (dabloons >= 1) {
 				cout << "You buy the greatgrandbaby calf from the cow" << endl;
 				inventory[25] = "grandbabycalf";
-				dubloons -= 1;
+				dabloons -= 1;
 			}
 			else
 				cout << "you dont have the money for that!" << endl;
@@ -1716,7 +1716,7 @@ void gnomeshop() {
 	int input = 1;
 	while (input != 0) {
 		cout << "Welcome to my shop human!" << endl;
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items I have for sale are:" << endl;
 		cout << "1) The scroll of Mislead: 120" << endl;
 		cout << "2) Alchemist's ice: 40" << endl;
@@ -1726,29 +1726,29 @@ void gnomeshop() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 120) {
+			if (dabloons >= 120) {
 				cout << "You have chosen the scroll of Mislead" << endl;
 				inventory[13] = "Mislead";
 				luck += 30;
-				dubloons -= 120;
+				dabloons -= 120;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that item!" << endl;
+				cout << "You dont have enough dabloons to pay for that item!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 40) {
+			if (dabloons >= 40) {
 				cout << "The Alchemist ice! Wonderful choice" << endl;
 				inventory[14] = "Ice";
-				dubloons -= 40;
+				dabloons -= 40;
 			}
 			else
 				cout << "You are to poor for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 5) {
+			if (dabloons >= 5) {
 				cout << "A bolt of water? I mean its your money.." << endl;
 				inventory[15] = "Water";
-					dubloons -= 5;
+					dabloons -= 5;
 				}
 			}
 		}
@@ -1759,7 +1759,7 @@ void dogshop() {
 	int input = 1;
 	while (input != 0) {
 		cout << "Welcome to my shop human!" << endl;
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items I have for sale are:" << endl;
 		cout << "1) Cosmic bones: 20 " << endl;
 		cout << "2) Tenis ball of Galaxy:50" << endl;
@@ -1769,28 +1769,28 @@ void dogshop() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 20) {
+			if (dabloons >= 20) {
 				cout << "You buy a bone from the dog with a smile" << endl;
 				inventory[28] = "cosmicbone";
-				dubloons -= 20;
+				dabloons -= 20;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that item!" << endl;
+				cout << "You dont have enough dabloons to pay for that item!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 50) {
+			if (dabloons >= 50) {
 				cout << "This tenis ball has you feeling lucky" << endl;
 				inventory[27] = "tenisball";
-				dubloons -= 50;
+				dabloons -= 50;
 			}
 			else
 				cout << "You are to poor for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 30) {
+			if (dabloons >= 30) {
 				cout << "You buy the dog treat from the dog" << endl;
 				inventory[26] = "dogtreat";
-				dubloons -= 30;
+				dabloons -= 30;
 			}
 		}
 	}
@@ -1801,7 +1801,7 @@ void shop() {
 	int input = 1;
 	while (input != 0) {
 		cout << "Welcome to the Shop!" << endl;
-		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "You currently have " << dabloons << " dabloons" << endl;
 		cout << "The current items for sale:" << endl;
 		cout << "1) Healing potion: 30" << endl;
 		cout << "2) Extra power up: 20" << endl;
@@ -1816,81 +1816,81 @@ void shop() {
 		cout << "Please tell me what you would like to buy:" << endl;
 		cin >> input;
 		if (input == 1) {
-			if (dubloons >= 30) {
+			if (dabloons >= 30) {
 				cout << "You bought a vile of a healing potion" << endl;
 				inventory[5] = "Hpotion";
 				PlayerHealth += 15;
-				dubloons -= 30;
+				dabloons -= 30;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 2) {
-			if (dubloons >= 60) {
+			if (dabloons >= 60) {
 				cout << "You have bought a power gain" << endl;
 				inventory[6] = "Power";
 				PlayerHealth += 10;
-				dubloons -= 20;
+				dabloons -= 20;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 3) {
-			if (dubloons >= 10) {
+			if (dabloons >= 10) {
 				cout << "Lets Get Luckyyyyyyyyyyyyyyyy" << endl;
 				inventory[7] = "Luck";
 				luck += 20;
-				dubloons -= 10;
+				dabloons -= 10;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 4) {
-			if (dubloons >= 120) {
+			if (dabloons >= 120) {
 				cout << "Get suited up" << endl;
 				inventory[8] = "Armor";
-				dubloons -= 120;
+				dabloons -= 120;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 5) {
-			if (dubloons >= 40) {
+			if (dabloons >= 40) {
 				cout << "Strength pot" << endl;
 				inventory[9] = "Spotion";
 				PlayerHealth += 30;
-				dubloons -= 40;
+				dabloons -= 40;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 6) {
-			if (dubloons >= 20) {
+			if (dabloons >= 20) {
 				cout << "You have a small weapon.." << endl;
 				inventory[10] = "Knife";
-				dubloons -= 20;
+				dabloons -= 20;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		if (input == 7) {
-			if (dubloons >= 20) {
+			if (dabloons >= 20) {
 				cout << "You want to protect yourself.." << endl;
 				inventory[11] = "Shield";
-				dubloons -= 20;
+				dabloons -= 20;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 
 		if (input == 8) {
-			if (dubloons >= 100) {
+			if (dabloons >= 100) {
 				cout << "You have a weapon.." << endl;
 				inventory[12] = "Katana";
-				dubloons -= 100;
+				dabloons -= 100;
 			}
 			else
-				cout << "You dont have enough dubloons to pay for that!" << endl;
+				cout << "You dont have enough dabloons to pay for that!" << endl;
 		}
 		else
 			cout << "You are not playing the game, please exit out!";
