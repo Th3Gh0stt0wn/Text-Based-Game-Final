@@ -1,0 +1,1900 @@
+#include<Windows.h>
+#include<iostream>
+#pragma comment (lib, "Winmm.lib")
+using namespace std;
+
+string inventory[31];
+
+//global variables
+int PlayerHealth = 200;
+int dubloons = 135;
+int affinity = 0;
+int luck = 0;
+bool hasWon = false;
+
+//function declarations
+int MonGen();
+int StongGen();
+int gulagMon();
+int getrid();
+int getgone();
+void StrongBattle();
+void BattleSystem();
+void gulag();
+void Getridbattle();
+void Getbattle();
+
+void Petinteraction();
+
+void Dropper();
+void itemdropper();
+
+void shop();
+void gnomeshop();
+void Shop();
+void dogshop();
+void eshop();
+void Shep();
+
+int finalG();
+int finalE();
+void finalbattleG();
+void finalbattleE();
+
+int main() {
+
+	//initialize inventory with empty spaces
+	for (int i = 0; i < 31; i++)
+		inventory[i] = " ";
+
+	cout << "Please press q to (q)uit.." << endl;
+	cout << "You open your eyes the brightness of the room lighting up a metal door slightly ajar" << endl;
+	
+	srand(time(NULL));
+	int room = 1;
+	string input = "a";
+
+	cout << "Credits:" << endl;
+	cout << "Asher Everything else" << endl;
+	cout << "Clockston for the Dog and Cow shop!" << endl;
+
+	while (input != "q" && PlayerHealth >= 0 && hasWon != true) { //OMG GAME LOOP-------------------
+
+		cout << "---------------------------------------" << endl;
+		cout << "Your affinity is: " << affinity << "." << endl;
+		cout << "Your health:" << PlayerHealth << "." << endl;
+		cout << "You have " << dubloons << "." << endl;
+		cout << "---------------------------------------" << endl;
+
+		if (affinity >= 50) {
+			cout << "Your Wyvern coughs up 50 dubloons" << endl;
+			
+			dubloons += 50;
+		}
+
+		cout << "-----Your Inventory-----" << endl; 
+		for (int i = 0; i < 31; i++)
+			cout << inventory[i] << " - " << " ";
+		cout << " " << endl;
+
+		switch (room) { //neutral
+		case 1:
+			system("color 07");
+			cout << "You're in the storage room. You can only walk (s)outh... but the door is locked" << endl;
+			if (inventory[0] != "key")
+				cout << "you see a old (k)ey on the ground." << endl;
+			cin >> input;
+			if (input == "s")
+				if (inventory[0] == "key") {
+					room = 2;
+					PlaySound(TEXT("door.wav"), NULL, SND_FILENAME | SND_ASYNC);
+					cout << "you unlock the door" << endl;
+					inventory[0] = " ";
+				}
+				else
+					cout << "the door is locked." << endl;	
+			else if (input == "k") {
+				cout << "you got a old key!" << endl;
+				inventory[0] = "key";
+			}
+			break;
+		case 2://neutral
+			system("color 71");
+			itemdropper();
+			cout << "You look around the room" << endl;
+			cout << "You're in a dim hallway that smells of rot. you can walk (s)outh to keep going deeper into the hall or walk (n)orth to go back..." << endl;
+			cout << "        ***" << endl;
+			cout << "      *******" << endl;
+			cout << "     *********" << endl;
+			cout << "/ \\ * ### ### * / \\" << endl;
+			cout << "|      @ / @      |" << endl;
+			cout << "\\ / \\    ^    / \\ /" << endl;
+			cout << "   * $$$$$$$$$ * " << endl;
+			cout << "Theres also a shopkeeper watching you.. do you (go) to him..?" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 3;
+			if (input == "n")
+				room = 1;
+			else if (input == "go")
+				shop();
+			break;
+		case 3://neutral
+			system("color 07");
+			cout << "Your in the darkest part of the hallway... Theres something following you now..." << endl;
+			cout << "You can go (s)outh to continue on or (n)orth to go back..." << endl; 
+			cout << "Quickly! press (a) if you wish to battle!" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 2;
+			else if (input == "s")
+				room = 4;
+			else if (input == "a")
+				BattleSystem();
+			break;
+		case 4://neutral
+			system("color 07");
+			cout << "You look to see whats following you... Its a small Wyvern... it seams very timid of you..." << endl;
+			cout << "Your in a room with two doors. For door one go (e)ast. For door two go (w)est. To go back go (n)orth..." << endl;
+			cin >> input;
+			if (input == "n")
+				room = 3;
+			else if (input == "e")
+				room = 23;
+			else if (input == "w")
+				room = 5;
+			break;
+		case 5://good start
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "Your in a room full of food very well lit with soft music playing in the backround. To go back go (e)ast... or go (w)est head deeper into the room" << endl;
+			cin >> input;
+			if (input == "e")
+				room = 4;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "w")
+				room = 6;
+			break;
+		case 6://good
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you wish to (p)et the Wyvern..?" << endl;
+			cout << "You can choose between two sides of the room... You look around and spot two different creatures waving at you..." << endl;
+			cout << "Or you can go back (e)ast" << endl;
+			cout << "A Gnome to the (n)orth or a Fairy to the (s)outh" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 7;
+			else if (input == "s")
+				room = 8;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "e")
+				room = 5;
+			break;
+		case 7://good
+			system("color F0");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "The is Gnome sitting alone at a table. As you approach him he suddenly jumps up and introduces himself" << endl;
+			cout << "		    ," << endl;
+			cout << "		   / \\ " << endl;
+			cout << "		  /   \\ " << endl;
+			cout << "	         /     \\ " << endl;
+			cout << "	        / ______\\ " << endl;
+			cout << "	       //  . .  \\\\" << endl;
+			cout << "	       (/(__7__)\\)" << endl;
+			cout << "	       |'-' = '-'|" << endl;
+			cout << "	       |         |" << endl;
+			cout << "              /\\         /\\ " << endl;
+			cout << "	     /'.         .'\\ " << endl;
+			cout << "	    / /|   `-`   |\\ \\ " << endl;
+			cout << "	    \\ \\|===0 0===|/ / " << endl;
+			cout << "	     '-|_________|-' " << endl;
+			cout << "		| __|__ | " << endl;
+			cout << "		 |--|--| " << endl;
+			cout << "		(__)`(__) " << endl;
+			cout << "" << endl;
+			cout << "Hello! I am Whyne, Shopkeeper of the underground, please take a look at my (g)shop!" << endl;
+			cout << "Or you can pick from the blue door to my (n)orth or the wood door to my (e)ast... or go (s)outh to go back" << endl;
+			cin >> input;
+			if (input == "g")
+				gnomeshop();
+			else if (input == "n")
+				room = 9;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "e")
+				room = 10;
+			else if (input == "s")
+				room = 6;
+			break;
+		case 8://good
+			system("color 7D");
+			cout << "Before you continue going deeper in the room do you wish to (p)et the Wyvern..?" << endl;
+			cout << "	.'.         .'." << endl;
+			cout << "	|  \\       /  |" << endl;
+			cout << "	'.  \\  |  /  .'" << endl;
+			cout << "	  '. \\\\|// .'" << endl;
+			cout << "           '--  -- ' " << endl;
+			cout << "	  .'  /|\\  '." << endl;
+			cout << "	  '..' | '..'" << endl;
+			cout << "" << endl;
+			cout << "The small Fairy smiles as you sit next to her as she tells the story of the dining room" << endl;
+			cout << "Once she finishes telling her story she points to two doors" << endl;
+			cout << "The blue door to the (s)outh leads to the storage room if you with to take a look, The wooden door to the (e)ast lets you leave" << endl;
+			cout << "If you want to go back go (n)orth" << endl;
+			cin >> input;
+			if (input == "e")
+				room = 10;
+			else if (input == "s")
+				room = 9;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 6;
+			break;
+		case 9://good
+			system("color 07");
+			cout << "You walk into the room with the blue door." << endl;
+			cout << "As you (r)umage around the bins and find..." << endl;
+			cout << "Do you wish to you can go (w)est to the next door" << endl;
+			cin >> input;
+			if (input == "r")
+				itemdropper();
+			else if (input == "w")
+				room = 10;
+		case 10://good
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "You walk into the new room the door closing behind you as you take in the scene of an indoor garden" << endl;
+			cout << "Do you walk farther into the room or go back?" << endl;
+			cout << "If you wish to continue please go (s)outh.. if not please go (n)orth for the Fairy and (g) for the Gnome" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 11;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 8;
+			else if (input == "g")
+				room = 7;
+			break;
+		case 11://good
+			system("color 07");
+			cout << "Your Wyvern trys to get your attention. Do you want to (p)et him?" << endl;
+			cout << "As you walk deeper into the room you admire the scene infront of you rows of flowers and ferns growing" << endl;
+			cout << "You notice a door to the (s)outh or you can go back (n)orth" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 10;
+			else if (input == "s")
+				room = 12;
+			else if (input == "p")
+				Petinteraction();
+			break;
+		case 12://good
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "You look around the room before noticing a monster staring at you. do you wish to (a) fight it?" << endl;
+			cout << "To go back head (n)orth. If you want to continue on go (w)est" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 11;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "w")
+				room = 13;
+			else if (input == "a")
+				BattleSystem();
+			break;
+		case 13://good
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "The lush greens expand further in the room the colors becoming more vibarant. you see a door infront of you" << endl;
+			cout << "To head back go (n)orth. To continue throught the door go (s)outh.." << endl;
+			cin >> input;
+			if (input == "s")
+				room = 14;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 12;
+			break;
+		case 14:
+			system("color 07");
+			Dropper();
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "The scene changes quickly from life to grey debths of nothing.." << endl;
+			cout << "If you wish to go back please head back go (n)orth if you wish to continue go (s)outh" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 15;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 13;
+			break;
+		case 15:
+			system("color 07");
+			cout << "The dull room is filled with nothing but spiderwebs and torches lighting the hall" << endl;
+			cout << "If you wish to battle press (a). If you wish to contine go (s)outh. if you wish to go back please walk (n)orth." << endl;
+			cin >> input;
+			if (input == "s")
+				room = 16;
+			else if (input == "a")
+				StrongBattle();
+			else if (input == "n")
+				room = 14;
+			break;
+		case 16:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "The colors begin to fade more darker as you continue down the hall the feeling of hopelessness growing witin you" << endl;
+			cout << "If you want to continue on please go (w)est.To go back head (n)orth. If you wish to (e)xplore the room please look around" << endl;
+			cin >> input;
+			if (input == "w")
+				room = 17;
+			else if (input == "e")
+				room = 44;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 15;
+			break;
+		case 17:
+			system("color ");
+			cout << "There is a shopkeeper looking at you do you (g)o to him?" << endl;
+			cout << "If you want to continue go (w)est.. go (s)outh to check out a side door. To go back go (e)ast"<< endl;
+			cin >> input;
+			if (input == "w")
+				room = 18;
+			else if (input == "s")
+				room = 19;
+			else if (input == "e")
+				room = 16;
+			else if (input == "g")
+				shop();
+			break;
+		case 18:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "You look at the barreles filling the room.. do you wish to (e)xplore... If you head (s)outh you can continue on..or go back (n)orth" << endl;
+			cout << "" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 17;
+			else if (input == "e")
+				room = 46;
+			else if (input == "s")
+				room = 20;
+			break;
+		case 19:
+			Dropper();
+			system("color 07");
+			cout << "Your in a round room filled with shelves. You think for a second before looking around finding nothing of use.." << endl;
+			cout << "to continue go (n)orth. go (e)ast if you want to run back" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 17;
+			else if (input == "e")
+				room = 20;
+			break;
+		case 20:
+			system("color 07");
+			cout << "The walking continues bringing you to a longer hallway than normal..." << endl;
+			cout << "If you wish to battle press (a). If you wish to contine go (s)outh. if you wish to go back please walk (w)est." << endl;
+			cin >> input;
+			if (input == "s")
+				room = 21;
+			else if (input == "a")
+				StrongBattle();
+			else if (input == "w")
+				room = 19;
+			break;
+		case 21:
+			Dropper();
+			system("color 07");
+			cout << "This is the darkest room youve encountered. Purple mist fills the bottom of the floor vines curling and crushing anything it can grab" << endl;
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..? This is the last time you'll every get to pet him..." << endl;
+			cout << "To continue onto the room with the purple mist please go (s)outh.. if you want to go back. go (n)orth" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 22;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "n")
+				room = 20;
+			break;
+		case 22://good end
+			system("color 07");
+			cout << "There is a shopkeeper looking at you do you (g)o to him?" << endl;
+			cout << "Are you (r)eady for the final battle? Have everything you need? or you need to head back (n)orth" << endl;
+			cin >> input;
+			if (input == "g")
+				Shop();
+			else if (input == "r")
+				room = 40;
+			else if (input == "n")
+				room = 21;
+			break;
+		case 23://bad start
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "Your in a dark room that smells of blood and sweat. to go back go (w)est.. or (e)ast to go deeper into the room" << endl;
+			cin >> input;
+			if (input == "w")
+				room = 4;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "e")
+				room = 24;
+			break;
+		case 24:
+			system("color 07");
+			cout << "" << endl;
+			cout << "You walk onto your starting position you see that you are in a gaurded room with your opponent facing you ready to fight press (a) to fight"<< endl;
+			cout << "Run (w)est to run away and back to safety. If you wish to skip the fight and move into another room go (e)ast." << endl;
+			cin >> input;
+			if (input == "a")
+				BattleSystem();
+			else if (input == "e")
+				room = 25;
+			else if (input == "w")
+				room = 23;
+			break;
+		case 25:
+			system("color 07");
+			itemdropper();
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "If you wish to travel to the next room go (s)outh.. to go back head (w)est" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 26;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "w")
+				room = 24;
+			break;
+		case 26:
+			system("color 07");
+			cout << "You lazily walk down the hall huming along to a song..." << endl;
+			cout << "you can go (s)outh to coninue or.. (e)ast to go back to the long room" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 27;
+			else if (input == "e")
+				room = 25;
+			break;
+		case 27:
+			system("color 07");
+			cout << "you walk into a room seeing stairs leading down (s)outh but it is blocked by something.. do you with to (a) fight it? or you can go (n)orth to continue up..  " << endl;
+			cin >> input;
+			if (input == "s")
+				room = 28;
+			else if (input == "a")
+				Getridbattle();
+			else if (input == "n")
+				room = 26;
+			break;
+		case 28:
+			system("color B0");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "There stands a cow shop keeper at the end of the hall.. do you wish to see the (c)ows shop?" << endl;
+			cout << "       __n__n__ " << endl;
+			cout << ".------`-\\0 0/ -'" << endl;
+			cout << " / ##  ## (oo)" << endl;
+			cout << " / \\## __ ./" << endl;
+			cout << " |//YY \\|/" << endl;
+			cout << " |||   |||" << endl;
+			cout << "If you dont want to see what the cow is selling please go (s)outh.. if you wish to go back up the stairs please go (n)orth.." << endl;
+			cin >> input;
+			if (input == "c")
+				eshop();
+			else if (input == "s")
+				room = 29;
+			else if (input == "n")
+				room = 27;
+			else if (input == "p")
+				Petinteraction();
+			break;
+		case 29:
+			system("color 07");
+			cout << "you wonder for a while.. You notice that the animals and plants start to expand and cover everything.." << endl;
+			cout << "you debate going back to the cow in the empty room to your (n)orth.. if you wish to continue go (e)ast" << endl;
+			cin >> input;
+			if (input == "e")
+				room = 30;
+			else if (input == "n")
+				room = 28;
+			break;
+		case 30:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "You enjoy the colorless room the dark walls and abndoned look becoming a spectacular sight" << endl;
+			cout << "Please go (w)est to go back.. or (n)orth to go down another set of stairs.." << endl;
+			cin >> input;
+			if (input == "w")
+				room = 29;
+			else if (input == "n")
+				room = 31;
+			else if (input == "p")
+				Petinteraction();
+			break;
+		case 31:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "You walk down a hall spoting another creature.. do you wish to (a) fight it..? or you can continue (s)outh.. if you want to go back go (n)orth" << endl;
+			cin >> input;
+			if (input == "n")
+				room = 30;
+			else if (input == "s")
+				room = 32;
+			else if (input == "a")
+				Getridbattle();
+			else if (input == "p")
+				Petinteraction();
+			break;
+		case 32:
+			system("color 56");
+			cout << "You continue through the room as you look around life blooming around you as you walk farther down the hall" << endl;
+			cout << "If you want to continue down this lucious hall please go (w)est... if you want to go back to the grey lifeless room from before please go (n)orth..." << endl;
+			cout << "   __    __" << endl;
+			cout << "o-''))_____\\\\" << endl;
+			cout << "\"--__ / *** )" << endl;
+			cout << "c_c__/-c____/" << endl;
+			cout << "You walk into the room as you spot a small dog walking up to you.. do you check out his (d)og shop?" << endl;
+			cin >> input;
+			if (input == "d")
+				dogshop();
+			else if (input == "w")
+				room = 33;
+			else if (input == "n")
+				room = 31;
+			break;
+		case 33:
+			system("color 07");
+			Dropper();
+			dubloons += 200;
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl; 
+			cout << "Things continue to florish as you walk deeper into the room... To go back head (e)ast.. If you wish to continue please head (s)outh" << endl;
+			cin >> input;
+			if (input == "e")
+				room = 32;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "s")
+				room = 34;
+			break;
+		case 34:
+			system("color 07");
+			cout << "You walk into the room as you start stepping in puttles and grass the grey rooms flush with life.." << endl;
+			cout << "If you want to go back please walk (s)outh.. to continue on please go (n)orth.. press (a) if you want to battle.." << endl;
+			cin >> input;
+			if (input == "s")
+				room = 33;
+			else if (input == "n")
+				room = 35;
+			else if (input == "a")
+				Getbattle();
+			break;
+		case 35:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern..?" << endl;
+			cout << "theres one room to your (e)ast if you wish to look around... the life seams to get thicker ahead of you if you want to continue head (w)est" << endl;
+			cout << "if you wish to (ex)plore... or go back (s)outh" << endl;
+			cin >> input;
+			if (input == "ex")
+				room = 45;
+			else if (input == "p")
+				Petinteraction();
+			else if (input == "e")
+				room = 36;
+			else if (input == "w")
+				room = 37;
+			else if (input == "s")
+				room = 34;
+			break;
+		case 36:
+			system("color 07");
+			cout << "You walk into the room and spot two things... press (a) to battle.. press (o) to look at the barrels next to you.. if you want to go back press (e)ast" << endl;
+			cin >> input;
+			if (input == "o")
+				Dropper();
+			else if(input == "a")
+				Getridbattle();
+			else if (input == "e")
+				room = 35;
+			break;
+		case 37:
+			system("color 07");
+			cout << "You walk deeper in the room as it starts to seam more like a forest.. " << endl;
+			cout << "if you wish to continue please head (n)orth.. if you want to go back please go (e)ast" << endl;
+			cin >> input;
+			if (input == "e")
+				room = 35;
+			else if (input == "n")
+				room = 38;
+			break;
+		case 38:
+			system("color 07");
+			cout << "Before you continue going deeper in the room do you want to (p)et the Wyvern.. ? This is the last time you'll every get to pet him..." << endl;
+			cout << "The life grows around you a soft green mist slowly filling the room... if you want to continue on please go (s)outh.. if you want to head back go (w)est" << endl;
+			cin >> input;
+			if (input == "s")
+				room = 39;
+			else if (input == "w")
+				room = 37;
+			else if (input == "p")
+				Petinteraction();
+			break;
+		case 39://bad end
+			system("color 07");
+			cout << "There is a shopkeeper looking at you do you (g)o to him?" << endl;
+			cout << "Are you (r)eady for the final battle? Have everything you need? or you need to head back (n)orth" << endl;
+			cin >> input;
+			if (input == "g")
+				Shep();
+			else if (input == "r")
+				room = 41;
+			else if (input == "n")
+				room = 38;
+			break;
+		case 40://Good Vs. Evil
+			cout << "You walk into the room before it quickly transforms into a smaller space still filled with the smoke..." << endl;
+			finalbattleG();
+			break;
+		case 41: //Evil Vs. Good
+			finalbattleE();
+			break;
+		case 42://gulag
+			gulag();
+			break;
+		case 43://g explore
+			cout << "You walk into a room you find behind a desk.. theres a monster standing there do you (a) fight it? or (b) to go back" << endl;
+			cin >> input;
+			if (input == "a")
+				MonGen();
+			else if (input == "b")
+				room = 18;
+			break;
+		case 44://g explore
+			cout << "You explore the room and see a chest press (o) to open the chest.. if you want to head back press (b).." << endl;
+			cin >> input;
+			if (input == "o")
+				itemdropper();
+			else if (input == "b")
+				room = 16;
+			break;
+		case 45://e explore
+			cout << "You walk into a room you find a small door. You crawl through and as you emerge in the room and stand up.. theres a monster standing there do you (a) fight it? or (b) to go back " << endl;
+			cin >> input;
+			if (input == "a")
+				Getridbattle();
+			else if (input == "b")
+				room = 35;
+			break;
+		case 46://e explore
+			cout << "you open a door hidden behind a skeleton.. you walk in and inside the room there is a chest.. press (o) to open.. and press (b) to go back" << endl;
+			cin >> input;
+			if (input == "o")
+				itemdropper();
+			else if (input == "b")
+				room = 35;
+			break;
+		}// END OF SWITCH
+	}// END OF GAME LOOP
+}// END OF MAIN
+
+// func deff
+int MonGen() {
+	int num = rand() % 100; //0-99
+	if (num < 20) {
+		PlaySound(TEXT("oni.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Oni spawned" << endl;
+		cout << "It jumps at you teeth bared" << endl;
+		system("color 04");
+		return 1;
+	}
+	else if (num < 50) {
+		PlaySound(TEXT("rock.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Golem spawned" << endl;
+		cout << "The ground rumbles underneath you as its body forms" << endl;
+		system("color 80");
+		return 2;
+	}
+	else if (num < 70) {
+		PlaySound(TEXT("oger.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Oger appears!" << endl;
+		cout << "It slams its club down into the ground causing the floor to shake" << endl;
+		system("color A0");
+		return 3;
+	}
+	else if (num < 85) {
+		PlaySound(TEXT("goblin.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Goblin lunges at you" << endl;
+		cout << "It's eyes shine with mischief" << endl;
+		system("color 0A");
+		return 9;
+	}
+	else if (num < 98) {
+		PlaySound(TEXT("ghoul.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Ghoul appears!" << endl;
+		cout << "It growls as it walk to you its claws scraping on the wall" << endl;
+		system("color F0");
+		return 10;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int Getrid() {
+	int num = rand() % 100; //0-99
+	if (num < 20) {
+		PlaySound(TEXT("Wolpertinger.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Wolpertinger spawned" << endl;
+		cout << "It jumps at you" << endl;
+		system("color D1");
+		return 14;
+	}
+	else if (num < 50) {
+		PlaySound(TEXT("harpie.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Harpie spawned" << endl;
+		cout << "" << endl;
+		system("color 91");
+		return 15;
+	}
+	else if (num < 70) {
+		PlaySound(TEXT("master-shake.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Pixie appears!" << endl;
+		cout << "" << endl;
+		system("color 6E");
+		return 16;
+	}
+	else if (num < 85) {
+		PlaySound(TEXT("fairy.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A fairy flys up to you" << endl;
+		cout << "Her teeth are bared ash she gets closer" << endl;
+		system("color D5");
+		return 17;
+	}
+	else if (num < 98) {
+		PlaySound(TEXT("unicorn.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A unicorn appears!" << endl;
+		cout << "It chargest at you its horn glisening in the room lights" << endl;
+		system("color F9");
+		return 18;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int StrongGen() {
+	int num = rand() % 100; //0-99
+	if (num < 20) {
+		PlaySound(TEXT("cerberus.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Cerberus spawned" << endl;
+		cout << "I glares at you its teeth bared" << endl;
+		system("color 80");
+		return 6;
+	}
+	else if (num < 50) {
+		PlaySound(TEXT("basilisk.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Basilisk spawned" << endl;
+		cout << "Did you trust a half snake..?" << endl;
+		system("color 60");
+		return 7;
+	}
+	else if (num < 70) {
+		PlaySound(TEXT("hydra.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Hydra appears!" << endl;
+		cout << "Its small... protect your ankles" << endl;
+		system("color 10");
+		return 8;
+	}
+	else if (num < 85) {
+		PlaySound(TEXT("banshie-scream.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Banshee screams loudly as she aproches you" << endl;
+		cout << "It's to late to run. Good luck" << endl;
+		system("color 40");
+		return 4;
+	}
+	else if (num < 98) {
+		cout << "A Djinn appears!" << endl;
+		cout << "A blue mist floats around it" << endl;
+		system("color 91");
+		PlaySound(TEXT("djinn.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		return 5;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int Getgone() {
+	int num = rand() % 100; //0-99
+	if (num < 20) {
+		PlaySound(TEXT("Manticore.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Manticore spawned" << endl;
+		cout << "It imediately goes to attack you" << endl;
+		system("color 0C");
+		return 19;
+	}
+	else if (num < 50) {
+		PlaySound(TEXT("Bunyip.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Bunyip spawns" << endl;
+		cout << "It stares you down" << endl;
+		system("color C0");
+		return 20;
+	}
+	else if (num < 70) {
+		PlaySound(TEXT("griffin.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A Griffin appears!" << endl;
+		cout << "It flats its wings sprinting at you" << endl;
+		system("color A8");
+		return 21;
+	}
+	else if (num < 85) {
+		PlaySound(TEXT("hippogriff.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "A hipprogriff growls at you" << endl;
+		cout << "It pounces at you" << endl;
+		system("color 90");
+		return 22;
+	}
+	else if (num < 98) {
+		cout << "A thing? appears!" << endl;
+		cout << "It gives you a long smile as it stares at you..." << endl;
+		system("color 62");
+		PlaySound(TEXT("squibbles.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		return 23;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int gulagMon() {
+	int num = rand() % 100;
+	if (num > 1) {
+		PlaySound(TEXT("stomp.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "You open your eyes to see a creature growling at you ready to fight and win.." << endl;
+		cout << "A cound chears aroudn you as uou take a breath.." << endl;
+		cout << "A Cyclops chargest at you its loud foot stpes shaking the arena" << endl;
+		system("color 06");
+		return 11;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int finalG() {
+	int num = rand() % 100;
+	if (num > 0) {
+		PlaySound(TEXT("eoni.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "The purple smoke get suffocating as you walk into the room.. looking around you spot something hidden in the shadows its growl head behind you" << endl;
+		cout << "A creature with long sharp claws about four times taller than yourself stares down" << endl;
+		cout << "Theres no running now..." << endl;
+		system("color 50");
+		system("pause");
+		return 12;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+int finalE() {
+	int num = rand() % 100;
+	if (num > 0) {
+		PlaySound(TEXT("dragon-roar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		cout << "The purple smoke get suffocating as you walk into the room.. looking around you spot something hidden in the shadows its growl head behind you" << endl;
+		cout << "A creature with long sharp claws about four times taller than yourself stares down" << endl;
+		cout << "Theres no running now..." << endl;
+		system("color 2F");
+		system("pause");
+		return 13;
+	}
+	else
+		cout << "nothing spawned" << endl;
+}
+
+void BattleSystem() {
+	int MonsterType = MonGen();
+	int MonsterHealth = 0;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	if (MonsterType == 1) {
+		MonsterHealth = 69;
+	}
+	if (MonsterType == 2) {
+		MonsterHealth = 80;
+	}
+	if (MonsterType == 3) {
+		MonsterHealth = 50;
+	}
+	if (MonsterType == 9) {
+		MonsterHealth = 75;
+	}
+	if (MonsterType == 10) {
+		MonsterHealth = 50;
+	}
+	if (MonsterType == 1) {
+		MonsterDamage = rand() % 26 + 1;
+	}
+	if (MonsterType == 2) {
+		MonsterDamage = rand() % 38 + 1;
+	}
+	if (MonsterType == 3) {
+		MonsterDamage = rand() % 16 + 1;
+	}
+	if (MonsterType == 9) {
+		MonsterDamage = rand() % 38 + 1;
+	}
+	if (MonsterType == 10) {
+		MonsterDamage = rand() % 21 + 1;
+	}
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+		//player attacks the monster!
+		PlayerDamage = rand() % 56; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now : " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {
+		cout << "You won the battle.." << endl;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+}
+
+void Getridbattle() {
+	int MonsterType = Getrid();
+	int MonsterHealth = 0;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	if (MonsterType == 14) {
+		MonsterHealth = 69;
+	}
+	if (MonsterType == 15) {
+		MonsterHealth = 80;
+	}
+	if (MonsterType == 16) {
+		MonsterHealth = 50;
+	}
+	if (MonsterType == 17) {
+		MonsterHealth = 75;
+	}
+	if (MonsterType == 18) {
+		MonsterHealth = 50;
+	}
+	if (MonsterType == 14) {
+		MonsterDamage = rand() % 26 + 1;
+	}
+	if (MonsterType == 15) {
+		MonsterDamage = rand() % 38 + 1;
+	}
+	if (MonsterType == 16) {
+		MonsterDamage = rand() % 16 + 1;
+	}
+	if (MonsterType == 17) {
+		MonsterDamage = rand() % 38 + 1;
+	}
+	if (MonsterType == 18) {
+		MonsterDamage = rand() % 21 + 1;
+	}
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+		//player attacks the monster!
+		PlayerDamage = rand() % 56; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[27] == "tenisball") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now: " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {
+		cout << "You won the battle.." << endl;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+}
+
+void StrongBattle() {
+	int MonsterType = StrongGen();
+	int MonsterHealth = 0;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	if (MonsterType == 4) {
+		MonsterHealth = 150;
+	}
+	if (MonsterType == 5) {
+		MonsterHealth = 1500;
+	}
+	if (MonsterType == 6) {
+		MonsterHealth = 130;
+	}
+	if (MonsterType == 7) {
+		MonsterHealth = 230;
+	}
+	if (MonsterType == 8) {
+		MonsterHealth = 420;
+	}
+	if (MonsterType == 4) {
+		MonsterDamage = rand() % 66 + 1;
+	}
+	if (MonsterType == 5) {
+		MonsterDamage = rand() % 98 + 1;
+	}
+	if (MonsterType == 6) {
+		MonsterDamage = rand() % 66 + 1;
+	}
+	if (MonsterType == 7) {
+		MonsterDamage = rand() % 98 + 1;
+	}
+	if (MonsterType == 8) {
+		MonsterDamage = rand() % 61 + 1;
+	}
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+		//player attacks the monster!
+		PlayerDamage = rand() % 56; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now : " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {
+		cout << "You won the battle.." << endl;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+}
+
+void Getbattle() {
+	int MonsterType = Getgone();
+	int MonsterHealth = 0;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	if (MonsterType == 19) {
+		MonsterHealth = 150;
+	}
+	if (MonsterType == 20) {
+		MonsterHealth = 1500;
+	}
+	if (MonsterType == 21) {
+		MonsterHealth = 130;
+	}
+	if (MonsterType == 22) {
+		MonsterHealth = 230;
+	}
+	if (MonsterType == 23) {
+		MonsterHealth = 420;
+	}
+	if (MonsterType == 19) {
+		MonsterDamage = rand() % 66 + 1;
+	}
+	if (MonsterType == 20) {
+		MonsterDamage = rand() % 98 + 1;
+	}
+	if (MonsterType == 21) {
+		MonsterDamage = rand() % 66 + 1;
+	}
+	if (MonsterType == 22) {
+		MonsterDamage = rand() % 98 + 1;
+	}
+	if (MonsterType == 23) {
+		MonsterDamage = rand() % 61 + 1;
+	}
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+		//player attacks the monster!
+		PlayerDamage = rand() % 56; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[27] == "tenisball") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now: " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {
+		cout << "You won the battle.." << endl;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+}
+
+
+void finalbattleG() {
+	int MonsterType = finalG();
+	int MonsterHealth = 3000;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+		MonsterDamage = rand() % 120 + 1;
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage -= 20;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[19] == "GoldArmor") { //check if you have
+			MonsterDamage /= 10;
+			cout << "The creature slashes at you but the golden armor protects you from taking the full force of the hit" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		//player attacks the monster!
+		PlayerDamage = rand() % 100; //calculate player damage
+
+		if (inventory[18] == "axe") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[20] == "Lævateinn") { //check if you have sword
+			PlayerDamage *= 4; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now: " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {//game end
+		cout << "You won the battle.." << endl;
+		cout << "Good job adventurer.. stay true" << endl;
+		cout << "A dragon come up behind you congratulating you as the room around you becomes brighter and full of life" << endl;
+		hasWon = true;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+	cout << "Game over..." << endl;
+}
+
+void finalbattleE() { 
+	int MonsterType = finalE();
+	int MonsterHealth = 0;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	if (MonsterType == 13) {
+		MonsterHealth = 1000;
+	}
+	if (MonsterType == 13) {
+		MonsterDamage = rand() % 90 + 1;
+	}
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[30] == "dragonscalearmor") { //check if you have
+			MonsterDamage /= 8;
+			cout << "The creature lunges at you its long claws scraping your armor but your some how still alive" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+
+		//player attacks the monster!
+		PlayerDamage = rand() %150; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[18] == "Axe") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[27] == "tenisball") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[29] == "hammer") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now: " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) { // game end
+		cout << "You won the battle.." << endl;
+		cout << "Now you may continue taking everything over till it is in your image." << endl;
+		cout << "As you take a breath you look around as the room dies around you a soft purple mist filling the room" << endl;
+		hasWon = true;
+	}
+	else if (PlayerHealth <= 0) {
+		cout << "You died..." << endl;
+		gulag();
+	}
+	cout << "Game over..." << endl;
+}
+
+void gulag() {
+	int MonsterType = gulagMon();
+	int MonsterHealth = 700;
+	int MonsterDamage = 0;
+	int PlayerDamage = 0;
+
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+
+		MonsterDamage = rand() % 70 + 1;
+
+		//monster attacks player!
+		if (inventory[11] == "Sheild") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[19] == "GoldArmor") { //check if you have
+			MonsterDamage /= 10;
+			cout << "The creature slashes at you but the golden armor protects you from taking the full force of the hit" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[8] == "Armor") {
+			MonsterDamage /= 2;
+			cout << "The creature attacks you but you blocked and take less damage and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else if (inventory[30] == "dragonscalearmor") { //check if you have
+			MonsterDamage /= 8;
+			cout << "The creature lunges at you its long claws scraping your armor but your some how still alive" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+		else {
+			cout << "The creature attacks you and you lose " << MonsterDamage << " HP" << endl;
+			PlayerHealth -= MonsterDamage;
+		}
+
+		//player attacks the monster!
+		PlayerDamage = rand() % 150; //calculate player damage
+
+		if (inventory[12] == "Katana") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[10] == "knife") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[27] == "tenisball") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[20] == "Lævateinn") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[18] == "Axe") { //check if you have sword
+			PlayerDamage *= 2; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else if (inventory[29] == "hammer") { //check if you have sword
+			PlayerDamage *= 3; //double damage if they have the sword
+			cout << "You fight back with the sword and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+		else { //they don"t have the sword
+			cout << "You fight back and the creature loses " << PlayerDamage << " HP" << endl;
+			MonsterHealth -= PlayerDamage;
+		}
+
+		cout << "Your health is now: " << PlayerHealth << " The creature's health is now : " << MonsterHealth << endl;
+	}
+
+	if (MonsterHealth <= 0) {
+		cout << "You won the battle.." << endl;
+		cout << "you won.. do you wish to go back..?" << endl;
+
+	}
+	else if (PlayerHealth <= 0) { // game end 
+		cout << "You died...again" << endl;
+		cout << "Game Over" << endl;
+		PlayerHealth -= 1000; //this will kill the game loop
+	}
+	system("pause");
+}
+
+void Dropper() {
+	cout << "-----------------------------DROPPER-------------------------------------" << endl;
+	int num = rand() % 100;
+	bool used = false;
+	if (num < 25 && used == false) {
+		cout << "You find yourself getting stronger" << endl;
+		PlayerHealth += 50;
+		used = true;
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else if (num < 40) {
+		cout << "You rest up and feel better than normal.. thats because you find 50 dubloons in a pouch!" << endl;
+		dubloons += 50;
+
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else if (num < 50) {
+		cout << "You get a bag full of dabloons" << endl;
+		dubloons += 70;
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	if (num < 90) {
+		cout << "You gain a handfull of dubloons" << endl;
+		dubloons += 100;
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+}
+
+void itemdropper() {
+	cout << "-----------------------ITEM-DROPPER----------------------------------" << endl;
+	int num = rand() % 100;
+	if (num < 20) {
+		cout << "You find a marble..." << endl;
+		inventory[17] = "marble";
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else if (num < 40) {
+		cout << "You found old bones..." << endl;
+		inventory[2] = "bone";
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else if (num < 50) {
+		cout << "You gain a pile of rocks..." << endl;
+		inventory[16] = "rocks";
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else if (num < 60) {
+		cout << "A chess peice" << endl;
+		inventory[3] = "chess";
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+	else {
+		cout << "You find a feather from a chicken" << endl;
+		inventory[4] = "feather";
+		cout << "---------------------------------------------------------------------" << endl;
+	}
+}
+
+void Petinteraction() {
+	int num = rand() % 100;
+	if (num < 20) {
+		cout << "You laugh and pet the Wyvern and then continue walking" << endl;
+		cout << "The Wyvern hisses at you as he trys to walk in front of you " << endl;
+		affinity += 10;
+	}
+	else if (num < 50) {
+		cout << "With a soft hum you pet the Wyvern and continue walking" << endl;
+		cout << "The Wyvern's claws clink on the ground as he follows you" << endl;
+		affinity += 10;
+	}
+	else if (num < 75) {
+		cout << "You pat his head and being walker at a pace faster than normal" << endl;
+		cout << "The Wyvern gently flaps his wings trying to catch up with you" << endl;
+		affinity += 10;
+	}
+	else if (num < 90) {
+		cout << "You pet him and laugh as" << endl;
+		cout << "The Wyvern does a little dance" << endl;
+		cout << "After a quick dance sesh you continue walking" << endl;
+		affinity += 10;
+	}
+	else
+		cout << "The Wyvern follows you nothing intresting happening" << endl;
+}
+
+void Shop() {
+	cout << "------------------------------SHOP--------------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items I have for sale are:" << endl;
+		cout << "1) Battle Axe: 150 " << endl;
+		cout << "2) Golden Armor: 360" << endl;
+		cout << "3) Lævateinn: 220" << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 150) {
+				cout << "A battle axe! wonderful choice!" << endl;
+				inventory[18] = "Axe";
+				dubloons -= 150;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that item!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 360) {
+				cout << "The golden armor? I wish you luck for your final battle!" << endl;
+				inventory[19] = "GoldArmor";
+				dubloons -= 360;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 220) {
+				cout << "Loki's weapon? an intresting choice for an intresting person" << endl;
+				inventory[20] = "Lævateinn";
+				dubloons -= 220;
+			}
+		}
+	}
+}
+
+void Shep() {
+	cout << "------------------------------SHOP--------------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items I have for sale are:" << endl;
+		cout << "1) Battle Axe: 150 " << endl;
+		cout << "2) Dragon Scale Armor: 360" << endl;
+		cout << "3) Thor's hammer: 220" << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 150) {
+				cout << "A battle axe! wonderful choice!" << endl;
+				inventory[18] = "Axe";
+				dubloons -= 150;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that item!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 360) {
+				cout << "The golden armor? I wish you luck for your final battle!" << endl;
+				inventory[30] = "dragonscalearmor";
+				dubloons -= 360;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 220) {
+				cout << "Thor's hammer? an intresting choice" << endl;
+				inventory[29] = "hammer";
+				dubloons -= 220;
+			}
+		}
+	}
+}
+
+void eshop() {
+	cout << "------------------------------SHOP--------------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items I have for sale are:" << endl;
+		cout << "1) Refreshing milk: 40 " << endl;
+		cout << "2) Siziling beef: 2" << endl;
+		cout << "3) Baby calf: 5" << endl;
+		cout << "4) Grandbaby calf: 2" << endl;
+		cout << "5) Greatgrandbaby cosmic calf: 1 " << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 40) {
+				cout << "You buy the milk from the cow.." << endl;
+				inventory[21] = "milk";
+				dubloons -= 20;
+				PlayerHealth += 50;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that item!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 2) {
+				cout << "You buy beef from the cow with no question" << endl;
+				inventory[22] = "beef";
+				dubloons -= 2;
+				PlayerHealth += 70;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 5) {
+				cout << "you buy the calf from the cow" << endl;
+				inventory[23] = "calf";
+				dubloons -= 5;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		if (input == 4) {
+			if (dubloons >= 2) {
+				cout << "You buy the grandbaby calf from the cow" << endl;
+				inventory[24] = "babycalf";
+				dubloons -= 2;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		if (input == 5) {
+			if (dubloons >= 1) {
+				cout << "You buy the greatgrandbaby calf from the cow" << endl;
+				inventory[25] = "grandbabycalf";
+				dubloons -= 1;
+			}
+			else
+				cout << "you dont have the money for that!" << endl;
+		}
+		
+	}
+}
+
+void gnomeshop() {
+	cout << "---------------------GNOME-SHOP------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "Welcome to my shop human!" << endl;
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items I have for sale are:" << endl;
+		cout << "1) The scroll of Mislead: 120" << endl;
+		cout << "2) Alchemist's ice: 40" << endl;
+		cout << "3) Bolt of water: 5" << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 120) {
+				cout << "You have chosen the scroll of Mislead" << endl;
+				inventory[13] = "Mislead";
+				luck += 30;
+				dubloons -= 120;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that item!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 40) {
+				cout << "The Alchemist ice! Wonderful choice" << endl;
+				inventory[14] = "Ice";
+				dubloons -= 40;
+			}
+			else
+				cout << "You are to poor for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 5) {
+				cout << "A bolt of water? I mean its your money.." << endl;
+				inventory[15] = "Water";
+					dubloons -= 5;
+				}
+			}
+		}
+	}
+
+void dogshop() {
+	cout << "---------------------GNOME-SHOP------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "Welcome to my shop human!" << endl;
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items I have for sale are:" << endl;
+		cout << "1) Cosmic bones: 20 " << endl;
+		cout << "2) Tenis ball of Galaxy:50" << endl;
+		cout << "3) The dog treat of prophecy:30 " << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 20) {
+				cout << "You buy a bone from the dog with a smile" << endl;
+				inventory[28] = "cosmicbone";
+				dubloons -= 20;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that item!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 50) {
+				cout << "This tenis ball has you feeling lucky" << endl;
+				inventory[27] = "tenisball";
+				dubloons -= 50;
+			}
+			else
+				cout << "You are to poor for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 30) {
+				cout << "You buy the dog treat from the dog" << endl;
+				inventory[26] = "dogtreat";
+				dubloons -= 30;
+			}
+		}
+	}
+}
+
+void shop() {
+	cout << "-----------------------SHOP----------------------------------" << endl;
+	int input = 1;
+	while (input != 0) {
+		cout << "Welcome to the Shop!" << endl;
+		cout << "You currently have " << dubloons << " dubloons" << endl;
+		cout << "The current items for sale:" << endl;
+		cout << "1) Healing potion: 30" << endl;
+		cout << "2) Extra power up: 20" << endl;
+		cout << "3) Luck potion: 10" << endl;
+		cout << "4) Armor: 120" << endl;
+		cout << "5) Strength potion: 40" << endl;
+		cout << "6) Small knife: 20" << endl;
+		cout << "7) Shield: 50" << endl;
+		cout << "8) Katana: 100" << endl;
+		cout << "Press 0 to quit" << endl;
+		cout << "---------------------------------------------------------------------" << endl;
+		cout << "Please tell me what you would like to buy:" << endl;
+		cin >> input;
+		if (input == 1) {
+			if (dubloons >= 30) {
+				cout << "You bought a vile of a healing potion" << endl;
+				inventory[5] = "Hpotion";
+				PlayerHealth += 15;
+				dubloons -= 30;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 2) {
+			if (dubloons >= 60) {
+				cout << "You have bought a power gain" << endl;
+				inventory[6] = "Power";
+				PlayerHealth += 10;
+				dubloons -= 20;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 3) {
+			if (dubloons >= 10) {
+				cout << "Lets Get Luckyyyyyyyyyyyyyyyy" << endl;
+				inventory[7] = "Luck";
+				luck += 20;
+				dubloons -= 10;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 4) {
+			if (dubloons >= 120) {
+				cout << "Get suited up" << endl;
+				inventory[8] = "Armor";
+				dubloons -= 120;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 5) {
+			if (dubloons >= 40) {
+				cout << "Strength pot" << endl;
+				inventory[9] = "Spotion";
+				PlayerHealth += 30;
+				dubloons -= 40;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 6) {
+			if (dubloons >= 20) {
+				cout << "You have a small weapon.." << endl;
+				inventory[10] = "Knife";
+				dubloons -= 20;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		if (input == 7) {
+			if (dubloons >= 20) {
+				cout << "You want to protect yourself.." << endl;
+				inventory[11] = "Shield";
+				dubloons -= 20;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+
+		if (input == 8) {
+			if (dubloons >= 100) {
+				cout << "You have a weapon.." << endl;
+				inventory[12] = "Katana";
+				dubloons -= 100;
+			}
+			else
+				cout << "You dont have enough dubloons to pay for that!" << endl;
+		}
+		else
+			cout << "You are not playing the game, please exit out!";
+
+		
+	}//end of game loop
+}//end of main
